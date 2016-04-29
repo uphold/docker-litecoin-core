@@ -1,0 +1,10 @@
+after_script:
+  - docker images
+
+language: bash
+
+script:
+  - docker build -t litecoind .
+  - docker run litecoind --version | grep "Litecoin Core"
+
+services: docker
