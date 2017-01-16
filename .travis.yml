@@ -1,10 +1,18 @@
 after_script:
   - docker images
 
+before_script:
+  - cd "$VERSION"
+  - IMAGE="litecoind:${VERSION}"
+
+env:
+  - VERSION=0.13
+  - VERSION=0.10
+
 language: bash
 
 script:
-  - docker build -t litecoind .
-  - docker run litecoind --version | grep "Litecoin Core"
+  - docker build -t "$IMAGE" .
+  - docker run "$IMAGE" --version | grep "Litecoin Core"
 
 services: docker

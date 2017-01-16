@@ -4,6 +4,10 @@ A litecoind docker image.
 
 [![uphold/litecoind][docker-pulls-image]][docker-hub-url] [![uphold/litecoind][docker-stars-image]][docker-hub-url] [![uphold/litecoind][docker-size-image]][docker-hub-url] [![uphold/litecoind][docker-layers-image]][docker-hub-url]
 
+## Supported tags and respective `Dockerfile` links
+- `0.13.2`, `0.13`, `latest` ([0.13/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.13/Dockerfile))
+- `0.10.4`, `0.10` ([0.10/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.10/Dockerfile))
+
 ## What is litecoind?
 
 litecoind is a program that implements the Litecoin protocol for remote procedure call (RPC) use. For more information see _[litecoinwiki](https://litecoin.info/Litecoin)_.
@@ -48,6 +52,15 @@ litecoind:
     -printtoconsole
     -regtest=1
 ```
+
+## Image variants
+The `uphold/litecoind` image comes in multiple flavors:
+
+### `uphold/litecoind:latest`
+Points to the latest release available of Litecoin Core. Occasionally pre-release versions will be included.
+
+### `uphold/litecoind:<version>`
+Based on a slim Debian image, targets a specific version branch or release of Litecoin Core (e.g. `0.13.2`, `0.13`).
 
 ## Supported Docker versions
 
