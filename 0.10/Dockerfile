@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:wheezy-slim
 
 MAINTAINER João Fonseca <jfonseca@uphold.com>
 
@@ -6,7 +6,7 @@ ENV GOSU_VERSION=1.7
 
 RUN useradd -r litecoin \
   && apt-get update -y \
-  && apt-get install -y curl \
+  && apt-get install -y curl gnupg \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
   && gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
