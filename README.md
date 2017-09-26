@@ -5,6 +5,7 @@ A litecoind docker image.
 [![uphold/litecoind][docker-pulls-image]][docker-hub-url] [![uphold/litecoind][docker-stars-image]][docker-hub-url] [![uphold/litecoind][docker-size-image]][docker-hub-url] [![uphold/litecoind][docker-layers-image]][docker-hub-url]
 
 ## Supported tags and respective `Dockerfile` links
+- `0.14.2`, `0.14`, `latest` ([0.14/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.14/Dockerfile))
 - `0.13.2`, `0.13`, `latest` ([0.13/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.13/Dockerfile))
 - `0.10.4`, `0.10` ([0.10/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.10/Dockerfile))
 
