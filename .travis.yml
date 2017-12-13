@@ -3,7 +3,7 @@ after_script:
 
 before_script:
   - cd "$VERSION"
-  - IMAGE="litecoind:${VERSION}"
+  - IMAGE="litecoin-core:${VERSION}"
 
 env:
   - VERSION=0.14
