@@ -6,7 +6,7 @@ LABEL maintainer.0="João Fonseca (@joaopaulofonseca)" \
 
 RUN useradd -r litecoin \
   && apt-get update -y \
-  && apt-get install -y curl gnupg \
+  && apt-get install -y curl gnupg python-setuptools python-pip procps htop \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
   && set -ex \
@@ -29,16 +29,25 @@ RUN curl -o /usr/local/bin/gosu -fSL https://github.com/tianon/gosu/releases/dow
   && chmod +x /usr/local/bin/gosu
 
 ENV LITECOIN_VERSION=0.14.2
-ENV LITECOIN_DATA=/home/litecoin/.litecoin
 
 RUN curl -O https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-x86_64-linux-gnu.tar.gz \
   && curl https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-linux-signatures.asc | gpg --verify - \
   && tar --strip=2 -xzf *.tar.gz -C /usr/local/bin \
   && rm *.tar.gz
 
-COPY docker-entrypoint.sh /entrypoint.sh
+ENV LITECOIN_DATA=/data
+RUN mkdir "$LITECOIN_DATA" \
+	&& chown -R litecoin:litecoin "$LITECOIN_DATA" \
+	&& ln -sfn "$LITECOIN_DATA" /home/litecoin/.litecoin \
+	&& chown -h litecoin:litecoin /home/litecoin/.litecoin
+VOLUME /data
 
-VOLUME ["/home/litecoin/.litecoin"]
+COPY docker-entrypoint.sh /entrypoint.sh
+COPY rabbitmqadmin /usr/bin/rabbitmqadmin
+COPY google-logger /usr/bin/google-logger
+
+RUN chmod +x /usr/bin/rabbitmqadmin
+RUN chmod +x /usr/bin/google-logger
 
 EXPOSE 9332 9333 19332 19333 19444
 
