@@ -5,6 +5,7 @@ A Litecoin Core docker image.
 [![uphold/litecoin-core][docker-pulls-image]][docker-hub-url] [![uphold/litecoin-core][docker-stars-image]][docker-hub-url] [![uphold/litecoin-core][docker-size-image]][docker-hub-url] [![uphold/litecoin-core][docker-layers-image]][docker-hub-url]
 
 ## Supported tags and respective `Dockerfile` links
+- `0.15.0.1rc1`, `0.15` ([0.15/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.15/Dockerfile))
 - `0.14.2`, `0.14`, `latest` ([0.14/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.14/Dockerfile))
 - `0.13.2`, `0.13` ([0.13/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.13/Dockerfile))
 - `0.10.4`, `0.10` ([0.10/Dockerfile](https://github.com/uphold/docker-litecoind/blob/master/0.10/Dockerfile))
