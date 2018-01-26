@@ -4,7 +4,9 @@ LABEL maintainer.0="João Fonseca (@joaopaulofonseca)" \
   maintainer.1="Pedro Branco (@pedrobranco)" \
   maintainer.2="Rui Marinho (@ruimarinho)"
 
-RUN useradd -r litecoin \
+RUN groupadd -r litecoin && useradd -r -m -g litecoin litecoin
+
+RUN set -ex \
   && apt-get update -y \
   && apt-get install -y curl gnupg python-setuptools python-pip procps htop \
   && apt-get clean \
@@ -19,6 +21,9 @@ RUN useradd -r litecoin \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
     gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
   done
+
+RUN pip install --upgrade google-cloud-logging
+RUN pip install --upgrade grpcio==1.7.3
 
 ENV GOSU_VERSION=1.10
 
