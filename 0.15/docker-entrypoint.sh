@@ -9,7 +9,7 @@ fi
 
 if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "litecoind" ]; then
   mkdir -p "$LITECOIN_DATA"
-  chmod 700 "$LITECOIN_DATA"
+  chmod 770 "$LITECOIN_DATA" || echo "Could not chmod $LITECOIN_DATA (may not have permission)"
   chown -R litecoin "$LITECOIN_DATA" || echo "Could not chown $LITECOIN_DATA (may not have permission)"
 
   echo "$0: setting data directory to $LITECOIN_DATA"
