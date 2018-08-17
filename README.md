@@ -104,7 +104,7 @@ Before setting up remote authentication, you will need to generate the `rpcauth`
 Example:
 
 ```sh
-❯ curl -sSL https://raw.githubusercontent.com/litecoin-project/litecoin/master/share/rpcuser/rpcuser.py | python - <username>
+❯ curl -sSL https://raw.githubusercontent.com/litecoin-project/litecoin/master/share/rpcauth/rpcauth.py | python - <username>
 
 String to be appended to litecoin.conf:
 rpcauth=foo:1e72f95158becf7170f3bac8d9224$957a46166672d61d3218c167a223ed5290389e9990cc57397d24c979b4853f8e
