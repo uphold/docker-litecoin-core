@@ -6,7 +6,7 @@ LABEL maintainer.0="João Fonseca (@joaopaulofonseca)" \
   editor.0="Bruno Amaral F (@bamaralf)"
 
 ENV GOSU_VERSION=1.10
-ENV LITECOIN_VERSION=0.16.2
+ENV LITECOIN_VERSION=0.16.3
 ENV LITECOIN_DATA=/data
 
 COPY docker-entrypoint.sh /entrypoint.sh
