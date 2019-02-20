@@ -4,11 +4,9 @@ LABEL maintainer.0="João Fonseca (@joaopaulofonseca)" \
   maintainer.1="Pedro Branco (@pedrobranco)" \
   maintainer.2="Rui Marinho (@ruimarinho)"
 
-RUN groupadd -r litecoin && useradd -r -m -g litecoin litecoin
-
-RUN set -ex \
+RUN useradd -r litecoin \
   && apt-get update -y \
-  && apt-get install -y curl gnupg python-setuptools python-pip procps htop \
+  && apt-get install -y curl gnupg \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
   && set -ex \
@@ -22,9 +20,6 @@ RUN set -ex \
     gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
   done
 
-RUN pip install --upgrade google-cloud-logging
-RUN pip install --upgrade grpcio==1.7.3
-
 ENV GOSU_VERSION=1.10
 
 RUN curl -o /usr/local/bin/gosu -fSL https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture) \
@@ -34,30 +29,19 @@ RUN curl -o /usr/local/bin/gosu -fSL https://github.com/tianon/gosu/releases/dow
   && chmod +x /usr/local/bin/gosu
 
 ENV LITECOIN_VERSION=0.14.2
+ENV LITECOIN_DATA=/home/litecoin/.litecoin
 
 RUN curl -O https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-x86_64-linux-gnu.tar.gz \
   && curl https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-linux-signatures.asc | gpg --verify - \
   && tar --strip=2 -xzf *.tar.gz -C /usr/local/bin \
   && rm *.tar.gz
 
-ENV LITECOIN_DATA=/data
-RUN mkdir "$LITECOIN_DATA" \
-	&& chown -R litecoin:litecoin "$LITECOIN_DATA" \
-	&& ln -sfn "$LITECOIN_DATA" /home/litecoin/.litecoin \
-	&& chown -h litecoin:litecoin /home/litecoin/.litecoin
-VOLUME /data
-
 COPY docker-entrypoint.sh /entrypoint.sh
-COPY rabbitmqadmin /usr/bin/rabbitmqadmin
-COPY google-logger /usr/bin/google-logger
 
-RUN chmod +x /usr/bin/rabbitmqadmin
-RUN chmod +x /usr/bin/google-logger
+VOLUME ["/home/litecoin/.litecoin"]
 
 EXPOSE 9332 9333 19332 19333 19444
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-EXPOSE 9332 9333 19332 19333 19444
 
 CMD ["litecoind"]
