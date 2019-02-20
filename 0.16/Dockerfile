@@ -45,9 +45,6 @@ RUN groupadd -r litecoin && useradd -r -m -g litecoin litecoin \
 	&& chown -R litecoin:litecoin "$LITECOIN_DATA" \
 	&& ln -sfn "$LITECOIN_DATA" /home/litecoin/.litecoin \
 	&& chown -h litecoin:litecoin /home/litecoin/.litecoin \
-# set files permissions
-  && chmod +x /usr/bin/rabbitmqadmin \
-  && chmod +x /usr/bin/google-logger
 
 VOLUME ["${LITECOIN_DATA}"]
 
