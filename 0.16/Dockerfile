@@ -49,7 +49,7 @@ RUN groupadd -r litecoin && useradd -r -m -g litecoin litecoin \
   && chmod +x /usr/bin/rabbitmqadmin \
   && chmod +x /usr/bin/google-logger
 
-VOLUME ["/home/litecoin/.litecoin"]
+VOLUME ["${LITECOIN_DATA}"]
 
 EXPOSE 9332 9333 19332 19333 19444
 
