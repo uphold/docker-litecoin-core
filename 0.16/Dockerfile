@@ -46,7 +46,7 @@ RUN groupadd -r litecoin && useradd -r -m -g litecoin litecoin \
 	&& ln -sfn "$LITECOIN_DATA" /home/litecoin/.litecoin \
 	&& chown -h litecoin:litecoin /home/litecoin/.litecoin \
 
-VOLUME ["${LITECOIN_DATA}"]
+VOLUME ["$LITECOIN_DATA"]
 
 EXPOSE 9332 9333 19332 19333 19444
 
