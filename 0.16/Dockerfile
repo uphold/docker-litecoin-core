@@ -39,7 +39,12 @@ RUN groupadd -r litecoin && useradd -r -m -g litecoin litecoin \
   && curl -O https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-x86_64-linux-gnu.tar.gz \
   && curl https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-linux-signatures.asc | gpg --verify - \
   && tar --strip=2 -xzf *.tar.gz -C /usr/local/bin \
-  && rm *.tar.gz 
+  && rm *.tar.gz \
+  # create litecoin workdir  
+  && mkdir "$LITECOIN_DATA" \
+	&& chown -R litecoin:litecoin "$LITECOIN_DATA" \
+	&& ln -sfn "$LITECOIN_DATA" /home/litecoin/.litecoin \
+	&& chown -h litecoin:litecoin /home/litecoin/.litecoin 
 
 VOLUME ["$LITECOIN_DATA"]
 
