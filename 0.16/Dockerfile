@@ -42,9 +42,9 @@ RUN groupadd -r litecoin && useradd -r -m -g litecoin litecoin \
   && rm *.tar.gz \
   # create litecoin workdir  
   && mkdir "$LITECOIN_DATA" \
-	&& chown -R litecoin:litecoin "$LITECOIN_DATA" \
-	&& ln -sfn "$LITECOIN_DATA" /home/litecoin/.litecoin \
-	&& chown -h litecoin:litecoin /home/litecoin/.litecoin 
+  && chown -R litecoin:litecoin "$LITECOIN_DATA" \
+  && ln -sfn "$LITECOIN_DATA" /home/litecoin/.litecoin \
+  && chown -h litecoin:litecoin /home/litecoin/.litecoin 
 
 VOLUME ["$LITECOIN_DATA"]
 
