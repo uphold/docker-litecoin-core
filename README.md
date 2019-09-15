@@ -214,7 +214,7 @@ This image is officially supported on Docker version 17.09, with support for old
 The [uphold/litecoin-core][docker-hub-url] docker project is under MIT license.
 
 [docker-hub-url]: https://hub.docker.com/r/uphold/litecoin-core
-[docker-layers-image]: https://img.shields.io/imagelayers/layers/uphold/litecoin-core/latest.svg?style=flat-square
+[docker-layers-image]: https://img.shields.io/microbadger/layers/uphold/litecoin-core/latest.svg?style=flat-square
 [docker-pulls-image]: https://img.shields.io/docker/pulls/uphold/litecoin-core.svg?style=flat-square
-[docker-size-image]: https://img.shields.io/imagelayers/image-size/uphold/litecoin-core/latest.svg?style=flat-square
+[docker-size-image]: https://img.shields.io/microbadger/image-size/uphold/litecoin-core/latest.svg?style=flat-square
 [docker-stars-image]: https://img.shields.io/docker/stars/uphold/litecoin-core.svg?style=flat-square
