@@ -24,7 +24,7 @@ ENV GOSU_VERSION=1.10
 
 RUN curl -o /usr/local/bin/gosu -fSL https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture) \
   && curl -o /usr/local/bin/gosu.asc -fSL https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc \
-  && grep $(sha256sum litecoin-${LITECOIN_VERSION}-x86_64-linux-gnu.tar.gz | awk '{ print $1 }') litecoin-${LITECOIN_VERSION}-linux-signatures.asc \
+  && gpg --verify /usr/local/bin/gosu.asc \
   && rm /usr/local/bin/gosu.asc \
   && chmod +x /usr/local/bin/gosu
 
