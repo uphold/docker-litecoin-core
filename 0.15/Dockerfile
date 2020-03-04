@@ -32,10 +32,11 @@ ENV LITECOIN_VERSION=0.15.1
 ENV LITECOIN_DATA=/home/litecoin/.litecoin
 
 RUN curl -O https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-x86_64-linux-gnu.tar.gz \
-  && curl https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-linux-signatures.asc | gpg --verify - \
+  && curl -O https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-linux-signatures.asc \
+  && gpg --verify litecoin-${LITECOIN_VERSION}-linux-signatures.asc \
   && grep $(sha256sum litecoin-${LITECOIN_VERSION}-x86_64-linux-gnu.tar.gz | awk '{ print $1 }') litecoin-${LITECOIN_VERSION}-linux-signatures.asc \
   && tar --strip=2 -xzf *.tar.gz -C /usr/local/bin \
-  && rm *.tar.gz
+  && rm *.tar.gz *.asc
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
