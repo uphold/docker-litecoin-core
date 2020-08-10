@@ -6,6 +6,7 @@ before_script:
   - IMAGE="litecoin-core:${VERSION}"
 
 env:
+  - VERSION=0.18
   - VERSION=0.14
   - VERSION=0.13
   - VERSION=0.10
