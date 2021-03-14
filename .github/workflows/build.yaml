@@ -1,6 +1,6 @@
 name: build
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -27,71 +27,88 @@ jobs:
         id: prepare
         run: |
           function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
-          LITECOIN_CORE_VERSION=${{matrix.version}}
-          LATEST_LITECOIN_CORE_MAJOR_VERSION=$(ls  | grep 0 | sort -n | tail -n 1)
+
+          LITECOIN_VERSION=${{matrix.version}}
+          LATEST_LITECOIN_MAJOR_VERSION=$(ls  | grep 0 | sort -n | tail -n 1)
+          PLATFORMS="linux/amd64"
           PUSH=false
-          REPO=uphold/litecoin-core
+          REPO=ruimarinho/litecoin-core
           TAGS=()
+
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             TAG=${GITHUB_REF#refs/tags/}
             PUSH=true
-            if [[ ${LITECOIN_CORE_VERSION} == *"alpine"* ]]; then
+
+            if [[ ${LITECOIN_VERSION} == *"alpine"* ]]; then
               TAGS+=("$REPO:$TAG-alpine")
             else
               TAGS+=("$REPO:$TAG")
             fi
+
             TAG_MAJOR_MINOR=$(echo $TAG | cut -c -4)
-            if [ $(version ${TAG_MAJOR_MINOR}) -ne $(version ${LITECOIN_CORE_VERSION}) ]; then
-              echo "Skipping build of base image $LITECOIN_CORE_VERSION/ as ${TAG} is targeted at ${TAG_MAJOR_MINOR}/"
+
+            if [ $(version ${TAG_MAJOR_MINOR}) -ne $(version ${LITECOIN_VERSION}) ]; then
+              echo "Skipping build of base image $LITECOIN_VERSION/ as ${TAG} is targeted at ${TAG_MAJOR_MINOR}/"
               exit 0
             fi
           else
-            TAGS=("$REPO:${LITECOIN_CORE_VERSION/\//-}")
-            if [ $(version ${LITECOIN_CORE_VERSION}) -ge $(version ${LATEST_LITECOIN_CORE_MAJOR_VERSION}) ]; then
-              echo "Version $(version ${LITECOIN_CORE_VERSION}) is greater than or equal to $(version ${LATEST_LITECOIN_CORE_MAJOR_VERSION}), tagging as latest"
-              if [[ ${LITECOIN_CORE_VERSION} != *"alpine"* ]]; then
+            TAGS=("$REPO:${LITECOIN_VERSION/\//-}")
+
+            if [ $(version ${LITECOIN_VERSION}) -ge $(version ${LATEST_LITECOIN_MAJOR_VERSION}) ]; then
+              echo "Version $(version ${LITECOIN_VERSION}) is greater than or equal to $(version ${LATEST_LITECOIN_MAJOR_VERSION}), tagging as latest"
+
+              if [[ ${LITECOIN_VERSION} != *"alpine"* ]]; then
                 TAGS+=("$REPO:latest")
               else
                 TAGS+=("$REPO:alpine")
               fi
             fi
+
             if [ $GITHUB_REF == "refs/heads/master" ]; then
               PUSH=true
             fi
           fi
+
           echo ::set-output name=build_date::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo ::set-output name=docker_platforms::${PLATFORMS}
+          echo ::set-output name=docker_username::ruimarinho
           echo ::set-output name=push::${PUSH}
           echo ::set-output name=tags::${TAGS[@]}
-          echo ::set-env name=build::true
-      - if: env.build == 'true'
+          echo ::set-output name=build::true
+      - if:  ${{ steps.prepare.outputs.build }} == 'true'
         name: Login into Docker Hub
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
         run: |
-          docker login --username ${DOCKER_HUB_USERNAME} --password ${DOCKER_HUB_PASSWORD}
-      - if: env.build == 'true'
+          docker login --username "${{ steps.prepare.outputs.docker_username }}" --password ${DOCKER_HUB_PASSWORD}
+
+      - if:  ${{ steps.prepare.outputs.build }} == 'true'
         name: Build Docker image
         run: |
           TAGS=(${{ steps.prepare.outputs.tags }})
+
           echo "Build date: ${{ steps.prepare.outputs.build_date }}"
+          echo "Docker platform: ${{ steps.prepare.outputs.docker_platforms }}"
           echo "Push: ${{ steps.prepare.outputs.push }}"
           echo "Tags: ${{ steps.prepare.outputs.tags }}"
-          echo docker buildx build \
+
+          echo docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
             --output "type=image,push=${{steps.prepare.outputs.push}}" \
             --progress=plain \
             --build-arg "BUILD_DATE=${{ steps.prepare.outputs.build_date }}" \
             --build-arg "VCS_REF=${GITHUB_SHA::8}" \
             $(printf "%s" "${TAGS[@]/#/ --tag }" ) \
             ${{ matrix.version }}/
-          docker buildx build \
+
+          docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
             --output "type=image,push=${{steps.prepare.outputs.push}}" \
             --progress=plain \
             --build-arg "BUILD_DATE=${{ steps.prepare.outputs.build_date }}" \
             --build-arg "VCS_REF=${GITHUB_SHA::8}" \
             $(printf "%s" "${TAGS[@]/#/ --tag }" ) \
             ${{ matrix.version }}/
-      - if: env.build == 'true'
+
+      - if:  ${{ steps.prepare.outputs.build }} == 'true'
         name: Clear Docker credentials
         run: |
           rm -f ${HOME}/.docker/config.json
