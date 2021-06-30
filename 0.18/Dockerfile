@@ -23,6 +23,7 @@ RUN useradd -r litecoin \
     B42F6819007F00F88E364FD4036A9C25BF357DD4 \
     FE3348877809386C \
   ; do \
+    gpg --no-tty --keyserver keys.openpgp.org --recv-keys "$key" || \
     gpg --no-tty --keyserver pgp.mit.edu --recv-keys "$key" || \
     gpg --no-tty --keyserver keyserver.pgp.com --recv-keys "$key" || \
     gpg --no-tty --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
