@@ -30,7 +30,7 @@ jobs:
 
           LITECOIN_VERSION=${{matrix.version}}
           LATEST_LITECOIN_MAJOR_VERSION=$(ls  | grep 0 | sort -n | tail -n 1)
-          PLATFORMS="linux/amd64"
+          PLATFORMS="linux/amd64 arm64"
           PUSH=false
           REPO=uphold/litecoin-core
           TAGS=()
@@ -92,7 +92,7 @@ jobs:
           echo "Push: ${{ steps.prepare.outputs.push }}"
           echo "Tags: ${{ steps.prepare.outputs.tags }}"
 
-          echo docker buildx build \
+          echo docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
             --output "type=image,push=${{steps.prepare.outputs.push}}" \
             --progress=plain \
             --build-arg "BUILD_DATE=${{ steps.prepare.outputs.build_date }}" \
@@ -100,7 +100,7 @@ jobs:
             $(printf "%s" "${TAGS[@]/#/ --tag }" ) \
             ${{ matrix.version }}/
 
-          docker buildx build \
+          docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
             --output "type=image,push=${{steps.prepare.outputs.push}}" \
             --progress=plain \
             --build-arg "BUILD_DATE=${{ steps.prepare.outputs.build_date }}" \
