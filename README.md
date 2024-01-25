@@ -6,7 +6,7 @@ A Litecoin Core docker image.
 
 ## Tags
 
-- `0.21.2.1`, `0.21`, `latest` ([0.21/Dockerfile](https://github.com/uphold/docker-litecoin-core/blob/master/0.21/Dockerfile))
+- `0.21.2.2`, `0.21`, `latest` ([0.21/Dockerfile](https://github.com/uphold/docker-litecoin-core/blob/master/0.21/Dockerfile))
 - `0.18.1`, `0.18` ([0.18/Dockerfile](https://github.com/uphold/docker-litecoin-core/blob/master/0.18/Dockerfile))
 - `0.17.1`, `0.17` ([0.17/Dockerfile](https://github.com/uphold/docker-litecoin-core/blob/master/0.17/Dockerfile))
 - `0.16.3`, `0.16` ([0.16/Dockerfile](https://github.com/uphold/docker-litecoin-core/blob/master/0.16/Dockerfile))
