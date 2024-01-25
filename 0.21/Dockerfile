@@ -30,7 +30,7 @@ RUN curl -o /usr/local/bin/gosu -fSL https://github.com/tianon/gosu/releases/dow
   && rm /usr/local/bin/gosu.asc \
   && chmod +x /usr/local/bin/gosu
 
-ENV LITECOIN_VERSION=0.21.2.1
+ENV LITECOIN_VERSION=0.21.2.2
 ENV LITECOIN_DATA=/home/litecoin/.litecoin
 
 RUN curl -SLO https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-x86_64-linux-gnu.tar.gz \
