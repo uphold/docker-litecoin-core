@@ -1,0 +1,11 @@
+services:
+  litecoind:
+    build: "0.21"
+    command:
+      -regtest
+      -rpcallowip=0.0.0.0/0
+      -rpcbind=0.0.0.0
+      -rpcpassword=foobar
+      -rpcuser=litecoinrpc
+    ports:
+    - 19443:19443
