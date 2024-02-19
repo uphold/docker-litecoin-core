@@ -70,6 +70,10 @@ jobs:
             fi
           fi
 
+          if [[ ${LITECOIN_VERSION} != *"alpine"* ]] && [ $(version ${LITECOIN_VERSION}) -ge $(version "0.21") ]; then
+            PLATFORMS="linux/amd64,linux/arm/v7,linux/arm64"
+          fi
+
           echo ::set-output name=build_date::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=docker_platforms::${PLATFORMS}
           echo ::set-output name=push::${PUSH}
