@@ -31,7 +31,7 @@ jobs:
 
           LITECOIN_VERSION=${{matrix.version}}
           LATEST_LITECOIN_MAJOR_VERSION=$(ls  | grep 0 | sort -n | tail -n 1)
-          PLATFORMS="linux/amd64"
+          PLATFORMS="linux/amd64,linux/arm64"
           PUSH=false
           REPO=uphold/litecoin-core
           TAGS=()

@@ -4,6 +4,15 @@ LABEL maintainer.0="João Fonseca (@joaopaulofonseca)" \
   maintainer.1="Pedro Branco (@pedrobranco)" \
   maintainer.2="Rui Marinho (@ruimarinho)"
 
+# Fix for arm64 builds
+# @see https://github.com/moby/buildkit/issues/1929
+RUN echo This is to fix linux/arm build \
+ && for U in dpkg-split dpkg-deb tar rm; do \
+        ln -fs `which $U` /usr/sbin/; \
+        ln -fs `which $U` /usr/local/sbin/; \
+    done
+# end
+
 RUN useradd -r litecoin \
   && apt-get update -y \
   && apt-get install -y curl gnupg \
@@ -14,11 +23,19 @@ RUN useradd -r litecoin \
     B42F6819007F00F88E364FD4036A9C25BF357DD4 \
     FE3348877809386C \
   ; do \
-    gpg --no-tty --keyserver pgp.mit.edu --recv-keys "$key" || \
+    gpg --no-tty --allow-non-selfsigned-uid --keyserver pgp.mit.edu --recv-keys "$key" || \
+    gpg --no-tty --keyserver keys.openpgp.org --recv-keys "$key" || \
     gpg --no-tty --keyserver keyserver.pgp.com --recv-keys "$key" || \
     gpg --no-tty --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
     gpg --no-tty --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
   done
+
+# Fix for arm64 builds
+# @see https://github.com/moby/buildkit/issues/1929
+RUN for U in dpkg-split dpkg-deb tar rm; do \
+        rm /usr/sbin/$U /usr/local/sbin/$U; \
+    done
+# end
 
 ENV GOSU_VERSION=1.10
 
