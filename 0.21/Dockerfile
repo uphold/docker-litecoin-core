@@ -31,7 +31,7 @@ RUN curl -o /usr/local/bin/gosu -fSL https://github.com/tianon/gosu/releases/dow
   && chmod +x /usr/local/bin/gosu
 
 ARG TARGETPLATFORM
-ENV LITECOIN_VERSION=0.21.2.2
+ENV LITECOIN_VERSION=0.21.5.6
 ENV LITECOIN_DATA=/home/litecoin/.litecoin
 
 RUN set -ex \
