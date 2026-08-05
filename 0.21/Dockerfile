@@ -12,14 +12,12 @@ RUN useradd -r litecoin \
   && set -ex \
   && for key in \
     # Litecoin (davidburkett38’s key)
-    3620E9D387E55666 \
+    D35621D53A1CC6A3456758D03620E9D387E55666 \
     # Gosu (tianon's key)
     B42F6819007F00F88E364FD4036A9C25BF357DD4 \
   ; do \
-    gpg --no-tty --keyserver pgp.mit.edu --recv-keys "$key" || \
-    gpg --no-tty --keyserver keyserver.pgp.com --recv-keys "$key" || \
-    gpg --no-tty --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
-    gpg --no-tty --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
+    gpg --no-tty --keyserver hkps://keys.openpgp.org --recv-keys "$key" || \
+    gpg --no-tty --keyserver hkps://keyserver.ubuntu.com --recv-keys "$key" ; \
   done
 
 ENV GOSU_VERSION=1.10
